@@ -11,7 +11,12 @@ module WebNoteMongo
     end
 
     def find_by_tag(tag)
-      @db.collection(COLLECTION_NAME).find({"tags"=>tag}).to_a
+      @db.collection(COLLECTION_NAME).find({"tags"=>tag}).to_a.sort_by {
+        |bson_ordered_hash| bson_ordered_hash["_id"].generation_time }.reverse
+    end
+
+    def find_by_id(ojbect_id)
+      @db.collection(COLLECTION_NAME).find_one( Mongo::ObjectID.from_string(object_id) )
     end
 
     def save(note)

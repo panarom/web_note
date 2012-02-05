@@ -2,6 +2,7 @@ require 'rubygems'
 require 'sinatra'
 require "sinatra/reloader"
 require 'web_note_mongo'
+require 'haml'
 
 before do
   WebNoteMongo.connect()
@@ -30,7 +31,18 @@ get '/' do
   #list latest & enter new
 end
 
+=begin
+get /regex-for-obj-id/ do #or %r{regex-for-obj-id}
+=end
+
 get '/:tag' do
   #show notes tagged with :tag
-  WebNoteMongo.find_by_tag(params[:tag]).join('<br/>')
+  @tagged_noteset = WebNoteMongo.find_by_tag(params[:tag])
+  haml :tag
+end
+
+helpers do
+  def note_link_text(note)
+    note["title"] || note["text"][0...80]
+  end
 end

@@ -1,0 +1,9 @@
+%fieldset
+  %label{:for => "title"} Title:
+  %p{:name=>'title'}= @note['title']
+
+  %label{:for => "text"} Text:
+  %p{:name => "text"}= @note['text']
+
+  %label{:for => "tags"} tags:
+  %p{:name => "tags"}= @note['tags'].join(',')

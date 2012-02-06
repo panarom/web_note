@@ -28,12 +28,19 @@ post '/', :host_name => /edit/ do
 end
 
 get '/' do
-  #list latest & enter new
+  haml :edit
 end
 
-=begin
-get /regex-for-obj-id/ do #or %r{regex-for-obj-id}
-=end
+post '/' do
+  #"params = #{params.to_s}; objectId = #{WebNoteMongo.save(params).to_s}"
+  redirect to("/#{WebNoteMongo.save(params).to_s}")
+end
+
+get /\/[0-9a-f]{24}/ do
+  @note = WebNoteMongo.find_by_id(request.path_info[1..-1])
+  haml :show
+end
+
 
 get '/:tag' do
   #show notes tagged with :tag

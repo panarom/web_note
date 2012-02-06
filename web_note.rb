@@ -32,7 +32,7 @@ get '/' do
 end
 
 post '/' do
-  #"params = #{params.to_s}; objectId = #{WebNoteMongo.save(params).to_s}"
+  params['tags'] = params['tags'].split(',')
   redirect to("/#{WebNoteMongo.save(params).to_s}")
 end
 

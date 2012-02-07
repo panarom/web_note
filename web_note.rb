@@ -32,7 +32,7 @@ get '/' do
 end
 
 post '/' do
-  params['tags'] = params['tags'].split(',')
+  params['tags'] = params['tags'].split(',').collect{ |t| t.strip }
   redirect to("/#{WebNoteMongo.save(params).to_s}")
 end
 
@@ -45,7 +45,11 @@ end
 get '/:tag' do
   #show notes tagged with :tag
   @tagged_noteset = WebNoteMongo.find_by_tag(params[:tag])
-  haml :tag
+  if @tagged_noteset.count > 0
+    haml :tag
+  else
+    "no notes found with tag:#{params[:tag]}"
+  end
 end
 
 helpers do

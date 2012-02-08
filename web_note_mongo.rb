@@ -8,18 +8,26 @@ module WebNoteMongo
   class << self
     def connect()
       @db = Mongo::Connection.new('localhost',27017).db(DB_NAME)
+      @collection = @db.collection(COLLECTION_NAME)
     end
 
-    def find_by_tag(tag)
-      @db.collection(COLLECTION_NAME).find({"tags"=>tag}).sort(["_id",Mongo::ASCENDING])
+    def find_by_tag(tags)
+      if tags.size == 1
+        tag_hash = {'tags'=>tags[0]}
+      else
+        tag_hash = {
+          '$and'=> tags.collect{ |t| {'tags'=>t} }
+        }
+      end
+      @collection.find(tag_hash).sort(["_id",Mongo::DESCENDING])
     end
 
     def find_by_id(oid)
-      @db.collection(COLLECTION_NAME).find_one( BSON::ObjectId.from_string(oid) )
+      @collection.find_one( BSON::ObjectId.from_string(oid) )
     end
 
     def save(note)
-      @db.collection(COLLECTION_NAME).save(note)
+      @collection.save(note)
     end
   end
 end

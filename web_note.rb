@@ -41,14 +41,21 @@ get /\/[0-9a-f]{24}/ do
   haml :show
 end
 
-
 get '/:tag' do
   #show notes tagged with :tag
-  @tagged_noteset = WebNoteMongo.find_by_tag(params[:tag])
+  render_note_list([ params[:tag] ])
+end
+
+get /(\/[^\/]+){2,}/ do
+  render_note_list( request.path_info[1..-1].split('/') )
+end
+
+def render_note_list(tags)
+  @tagged_noteset = WebNoteMongo.find_by_tag(tags)
   if @tagged_noteset.count > 0
     haml :tag
   else
-    "no notes found with tag:#{params[:tag]}"
+    "no notes found with tag(s):#{tags}"
   end
 end
 

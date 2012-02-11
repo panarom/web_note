@@ -29,5 +29,9 @@ module WebNoteMongo
     def save(note)
       @collection.save(note)
     end
+
+    def delete(note)
+      @collection.remove(note)
+    end
   end
 end

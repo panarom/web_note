@@ -4,27 +4,10 @@ require "sinatra/reloader"
 require 'web_note_mongo'
 require 'haml'
 
+MONGO_ID_REGEX = /\/[0-9a-f]{24}/
+
 before do
   WebNoteMongo.connect()
-end
-
-post '/', :host_name => /edit/ do
-  #edit tag with this
-end
-
-get '/', :host_name => /latest/ do
-  #show latest
-end
-
-get '/', :host_name => /search/ do
-  #get search page
-end
-post '/', :host_name => /search/ do
-  #post search
-end
-
-post '/', :host_name => /edit/ do
-  #edit tag with this
 end
 
 get '/' do
@@ -32,13 +15,16 @@ get '/' do
 end
 
 post '/' do
-  params['tags'] = params['tags'].split(',').collect{ |t| t.strip }
-  redirect to("/#{WebNoteMongo.save(params).to_s}")
+  save_note()
 end
 
-get /\/[0-9a-f]{24}/ do
+get MONGO_ID_REGEX do
   @note = WebNoteMongo.find_by_id(request.path_info[1..-1])
   haml :show
+end
+
+post MONGO_ID_REGEX do
+  save_note()
 end
 
 get '/:tag' do
@@ -57,6 +43,11 @@ def render_note_list(tags)
   else
     "no notes found with tag(s):#{tags}"
   end
+end
+
+def save_note()
+  params['tags'] = params['tags'].split(',').collect{ |t| t.strip }
+  redirect to("/#{WebNoteMongo.save(params).to_s}")
 end
 
 helpers do

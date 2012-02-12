@@ -1,15 +1,8 @@
 %form{ :action => "", :method => "post"}
   %fieldset
-    %label{:for => "title"} Title:
-    %input{:type => "text", :name => "title", :class => "text"}
-
-    %label{:for => "text"} Text:
-    %textarea{:name => "text"}
-
-    %label{:for => "tags"} Tags:
-    %input{:type => "text", :name => "tags", :class => "text"}
-
-    %label{:for => "OTP"} One Time PIN:
-    %input{:type => "text", :name => "OTP", :class => "text"}		
+    - @@TAGS.each do |tag|
+      %label{:for => "#{tag}"} #{tag.capitalize}:
+      %textarea{:name => "#{tag}"}= @note[tag] if @note
+    
 
   %input{:type => "submit", :value => "commit", :class => "button"}

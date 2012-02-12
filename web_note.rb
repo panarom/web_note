@@ -5,6 +5,7 @@ require 'web_note_mongo'
 require 'haml'
 
 MONGO_ID_REGEX = /\/[0-9a-f]{24}/
+@@TAGS = ['title', 'text', 'tags', 'otp']
 
 before do
   WebNoteMongo.connect()
@@ -15,16 +16,22 @@ get '/' do
 end
 
 post '/' do
-  save_note()
+  save_note
+end
+
+get Regexp.new(MONGO_ID_REGEX.to_s + /\/edit/.to_s) do
+  @note = WebNoteMongo.find_by_id(get_id)
+  @note['tags'] = @note['tags'].join(',')
+  haml :edit
+end
+post Regexp.new(MONGO_ID_REGEX.to_s + /\/edit/.to_s) do
+  params['_id'] = get_id
+  save_note
 end
 
 get MONGO_ID_REGEX do
   @note = WebNoteMongo.find_by_id(request.path_info[1..-1])
   haml :show
-end
-
-post MONGO_ID_REGEX do
-  save_note()
 end
 
 get '/:tag' do
@@ -46,8 +53,19 @@ def render_note_list(tags)
 end
 
 def save_note()
-  params['tags'] = params['tags'].split(',').collect{ |t| t.strip }
-  redirect to("/#{WebNoteMongo.save(params).to_s}")
+  if WebNoteMongo.check_pin(params['OTP'])
+    params.delete('OTP')
+    params['tags'] = params['tags'].split(',').collect{ |t| t.strip }
+    redirect to("/#{WebNoteMongo.save(params).to_s}")
+  else
+    params['otp'] = "INVALID PIN: #{params['otp']}"
+    @note = params
+    haml :edit
+  end
+end
+
+def get_id
+  request.path_info.split('/')[1]
 end
 
 helpers do

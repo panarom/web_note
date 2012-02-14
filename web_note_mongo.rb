@@ -23,20 +23,24 @@ module WebNoteMongo
     end
 
     def find_by_id(oid)
-      @collection.find_one( BSON::ObjectId.from_string(oid) )
+      @collection.find_one( str_to_obj_id(oid) )
     end
 
     def save(note)
-      note['_id'] = BSON::ObjectId.from_string(note['_id']) if note['_id']
+      note['_id'] = str_to_obj_id(note['_id']) if note['_id']
       @collection.save(note)
     end
 
-    def delete(note)
-      @collection.remove(note)
+    def delete(oid)
+      @collection.remove({'_id'=>str_to_obj_id(oid)})
     end
 
     def check_pin(pin)
       @db.collection('PIN').remove({'pin'=>pin}, {:safe=>true})["n"] > 0
+    end
+
+    def str_to_obj_id(oid)
+      BSON::ObjectId.from_string(oid)
     end
   end
 end

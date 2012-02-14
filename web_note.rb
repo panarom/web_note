@@ -29,6 +29,18 @@ post Regexp.new(MONGO_ID_REGEX.to_s + /\/edit/.to_s) do
   save_note
 end
 
+get Regexp.new(MONGO_ID_REGEX.to_s + /\/delete/.to_s) do
+  haml :delete
+end
+post Regexp.new(MONGO_ID_REGEX.to_s + /\/delete/.to_s) do
+  if WebNoteMongo.check_pin(params['otp'])
+     WebNoteMongo.delete(get_id)
+     redirect to '/'
+   else
+     redirect to "#{get_id}/delete"
+   end
+end
+
 get MONGO_ID_REGEX do
   @note = WebNoteMongo.find_by_id(request.path_info[1..-1])
   haml :show
@@ -53,8 +65,8 @@ def render_note_list(tags)
 end
 
 def save_note()
-  if WebNoteMongo.check_pin(params['OTP'])
-    params.delete('OTP')
+  if WebNoteMongo.check_pin(params['otp'])
+    params.delete('otp')
     params['tags'] = params['tags'].split(',').collect{ |t| t.strip }
     redirect to("/#{WebNoteMongo.save(params).to_s}")
   else

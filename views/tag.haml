@@ -1,4 +1,4 @@
 %body
   %ul
   =list_of(@tagged_noteset) do |note|
-    -haml_tag(:a, html_escape( note_link_text(note) ), { :href=>"/#{note['_id'].to_s}" })
+    -haml_tag(:a, html_escape( note_link_text(note) ), { :href=>"/#{note['_id']}" })

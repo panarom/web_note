@@ -1,9 +1,7 @@
-%fieldset
-  %label{:for => "title"} Title:
-  %p{:name=>'title'}= @note['title']
+%h1= @note['title']
+%p= @note['text']
+- @note['tags'].each do |tag|
+  -haml_tag(:a, tag, { :href=>"/#{tag}" })
 
-  %label{:for => "text"} Text:
-  %p{:name => "text"}= @note['text']
-
-  %label{:for => "tags"} tags:
-  %p{:name => "tags"}= @note['tags'].join(',')
+-haml_tag(:a, "edit", { :href=>"/#{@note['_id']}/edit" })
+-haml_tag(:a, "delete", { :href=>"/#{@note['_id']}/delete" })

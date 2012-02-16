@@ -3,5 +3,6 @@
 - @note['tags'].each do |tag|
   -haml_tag(:a, tag, { :href=>"/#{tag}" })
 
--haml_tag(:a, "edit", { :href=>"/#{@note['_id']}/edit" })
--haml_tag(:a, "delete", { :href=>"/#{@note['_id']}/delete" })
+%fieldset
+  -haml_tag(:a, "edit", { :href=>"/#{@note['_id']}/edit" })
+  -haml_tag(:a, "delete", { :href=>"/#{@note['_id']}/delete" })

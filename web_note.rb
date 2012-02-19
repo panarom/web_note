@@ -41,8 +41,12 @@ post Regexp.new(MONGO_ID_REGEX.to_s + /\/delete/.to_s) do
    end
 end
 
+get Regexp.new(MONGO_ID_REGEX.to_s + /\/text/.to_s) do
+  WebNoteMongo.find_by_id(get_id)['text']
+end
+
 get MONGO_ID_REGEX do
-  @note = WebNoteMongo.find_by_id(request.path_info[1..-1])
+  @note = WebNoteMongo.find_by_id(get_id)
   haml :show
 end
 

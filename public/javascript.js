@@ -1,17 +1,16 @@
 delete_note=function()
 {
 
-	$("#delete_link").click({href: $(this).attr('href')},
+	$("#delete_link").click(
 		function(event)
 		{
 			event.preventDefault();
 			$( "#delete_dialog" ).dialog({
-				autoOpen: false,
 				modal: true,
 				buttons : {
 					"Confirm" : function() {
 						$.post(
-							eventData['href'],
+							event.currentTarget.href,
 							{'otp':$("#pin").text()}
 						);
 					},

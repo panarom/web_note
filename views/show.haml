@@ -1,3 +1,11 @@
+%script{:type=>"text/javascript", :src=>"/jquery-1.7.1.js"}
+%script{:type=>"text/javascript", :src=>"/jquery-ui-1.8.18.custom.min.js"}
+-#http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"}
+%script{:type=>"text/javascript", :src=>"/javascript.js"}
+:javascript
+  $(document).ready( delete_note );
+
+
 %h1= @note['title']
 %p= @note['text']
 - @note['tags'].each do |tag|
@@ -5,4 +13,9 @@
 
 %fieldset
   -haml_tag(:a, "edit", { :href=>"/#{@note['_id']}/edit" })
-  -haml_tag(:a, "delete", { :href=>"/#{@note['_id']}/delete" })
+  -haml_tag(:a, "delete", { :href=>"/#{@note['_id']}/delete", :id=>'delete_link' })
+
+#delete_dialog{:hidden=>true}
+  are you sure?
+  %textarea{:name=>'pin'}
+

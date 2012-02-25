@@ -1,34 +1,23 @@
-//function
-//to generate function that takes event as argument and returns data
-//that takes an oid; to provide note text for expansion
-function get_note_text_getter_function(oid, placeholder)
+delete_note=function()
 {
-	return function(event) 
-{
-	event.preventDefault();
-	$.get
-	(
-		"/" + oid,
-		function(data)
-		{
-			$(placeholder).html(data);
-		}
-	)
-}
 
-function delete_note()
-{
-	$("a").click(
-		var targetURL = $(this).attr("href");
+	$("#delete_link").click({href: $(this).attr('href')},
 		function(event)
 		{
-			e.preventDefault();
-			$.dialog({
+			event.preventDefault();
+			$( "#delete_dialog" ).dialog({
+				autoOpen: false,
+				modal: true,
 				buttons : {
-					"Confirm" : function() { $.get(targetURL); }
+					"Confirm" : function() {
+						$.post(
+							eventData['href'],
+							{'otp':$("#pin").text()}
+						);
+					},
 					"Cancel" : function() { $(this).dialog("close"); }
 				}
-			})
+			});
 		}
-	)
+	);
 }

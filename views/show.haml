@@ -14,7 +14,8 @@
   -haml_tag(:a, "edit", { :href=>"/#{@note['_id']}/edit" })
   -haml_tag(:a, "delete", { :href=>"/#{@note['_id']}/delete", :id=>'delete_link' })
 
-#delete_dialog{:hidden=>true}
-  are you sure?
-  %textarea{:name=>'pin'}
-
+%form{:action=>"", :id=>'delete_dialog', :hidden=>true}
+  %fieldset
+    %h3 Are you sure?
+    %label{:for=>'pin'}otp:
+    %textarea{:id=>'pin'}

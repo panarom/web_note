@@ -11,7 +11,8 @@ delete_note=function()
 					"Confirm" : function() {
 						$.post(
 							event.currentTarget.href,
-							{'otp':$("#pin").text()}
+							{'otp':$("#pin").val()},
+							success_function
 						);
 					},
 					"Cancel" : function() { $(this).dialog("close"); }
@@ -19,4 +20,8 @@ delete_note=function()
 			});
 		}
 	);
+}
+
+function success_function(data, textStatus, jqXHR) {
+	console.log( data );
 }

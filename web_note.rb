@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'sinatra'
-require "sinatra/reloader"
 require 'web_note_mongo'
 require 'haml'
 

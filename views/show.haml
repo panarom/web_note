@@ -16,6 +16,4 @@
 
 %form{:action=>"", :id=>'delete_dialog', :hidden=>true}
   %fieldset
-    %h3 Are you sure?
-    %label{:for=>'pin'}otp:
-    %textarea{:id=>'pin'}
+    = haml(:confirm_delete, :layout=>false)

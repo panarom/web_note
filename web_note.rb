@@ -1,8 +1,10 @@
 require 'rubygems'
 require 'sinatra'
 require "sinatra/reloader"
-require 'web_note_mongo'
+require './web_note_mongo'
 require 'haml'
+
+set :bind, 'localhost'
 
 MONGO_ID_REGEX = /\/[0-9a-f]{24}/
 @@TAGS = ['title', 'text', 'tags', 'otp']

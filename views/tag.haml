@@ -2,10 +2,10 @@
 %script{:type=>"text/javascript", :src=>"/jquery-ui-1.8.18.custom.min.js"}
 %script{:type=>"text/javascript", :src=>"/javascript.js"}
 :javascript
-  $(document).ready( get_note_text );
+  $(document).ready( tag_accordion );
 
 %body
-  %ul
+  %ul{:id=>'tag_accordion'}
     =list_of(@tagged_noteset) do |note|
       -haml_tag(:a, html_escape( note_link_text(note) ), { :class=>"link_to_note", :href=>"/#{note['_id']}" })
       %div{:id=>"#{note['_id']}"}

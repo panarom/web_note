@@ -37,3 +37,15 @@ get_note_text=function()
 		}
 	)
 }
+
+tag_accordion=function()
+{
+	$('#tag_accordion').accordion(
+		{active: false,
+		 collapsible: true,
+		 change: function(event, ui) {
+			 ui.newHeader.next('div').load('notes.0xf1d0.net');
+		 }
+		}
+	)
+}

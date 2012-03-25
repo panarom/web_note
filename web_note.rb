@@ -16,8 +16,11 @@ get '/' do
 end
 
 post '/' do
-  save_note unless params['text'].empty? and params['title'].empty?
-  redirect to "#{params['tags'].delete(' ','').tr(',','/')}" unless params['tags'].empty?
+  if (params['text'].empty? ^ params['title'].empty?)
+    save_note
+  else
+    redirect to "#{params['tags'].delete(' ','').tr(',','/')}"
+  end
 end
 
 get Regexp.new(MONGO_ID_REGEX.to_s + /\/edit/.to_s) do

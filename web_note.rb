@@ -16,7 +16,7 @@ get '/' do
 end
 
 post '/' do
-  save_note unless params['text'].empty?
+  save_note unless params['text'].empty? and params['title'].empty?
   redirect to "#{params['tags'].delete(' ','').tr(',','/')}" unless params['tags'].empty?
 end
 

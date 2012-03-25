@@ -4,15 +4,15 @@
 :javascript
   $(document).ready( delete_note );
 
-
 %h1= @note['title']
-%p= @note['text']
-- @note['tags'].each do |tag|
-  -haml_tag(:a, tag, { :href=>"/#{tag}" })
+#note_content
+  %p{:id=>"note_text"}= @note['text']
+  - @note['tags'].each do |tag|
+    -haml_tag(:a, tag, { :href=>"/#{tag}" })
 
-%fieldset
-  -haml_tag(:a, "edit", { :href=>"/#{@note['_id']}/edit" })
-  -haml_tag(:a, "delete", { :href=>"/#{@note['_id']}/delete", :id=>'delete_link' })
+  %fieldset
+    -haml_tag(:a, "edit", { :href=>"/#{@note['_id']}/edit" })
+    -haml_tag(:a, "delete", { :href=>"/#{@note['_id']}/delete", :id=>'delete_link' })
 
 %form{:action=>"", :id=>'delete_dialog', :hidden=>true}
   %fieldset

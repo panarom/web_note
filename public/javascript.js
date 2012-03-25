@@ -12,7 +12,7 @@ delete_note=function()
 						$.post(
 							event.currentTarget.href,
 							{'otp':$("#pin").val()},
-							success_function
+							delete_note_success_function
 						);
 					},
 					"Cancel" : function() { $(this).dialog("close"); }
@@ -22,6 +22,18 @@ delete_note=function()
 	);
 }
 
-function success_function(data, textStatus, jqXHR) {
+function delete_note_success_function(data, textStatus, jqXHR) {
 	console.log( data );
+}
+
+get_note_text=function()
+{
+	$("a.link_to_note").click(
+		function(event)
+		{
+			var id_url = event.currentTarget.href;
+			event.preventDefault();
+			$('#' + id_url.split('/').pop()).load(id_url + ' #note_content');
+		}
+	)
 }

@@ -43,7 +43,7 @@ tag_accordion=function()
 	$('#tag_accordion').accordion(
 		{active: false,
 		 collapsible: true,
-		 change: function(event, ui) {
+		 changestart: function(event, ui) {
 			 ui.newContent.load(ui.newHeader.attr('href') + ' #note_content');
 		 }
 		}

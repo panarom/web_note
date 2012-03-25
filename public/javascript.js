@@ -44,7 +44,7 @@ tag_accordion=function()
 		{active: false,
 		 collapsible: true,
 		 change: function(event, ui) {
-			 ui.newHeader.next('div').load('notes.0xf1d0.net');
+			 ui.newContent.load(ui.newHeader.attr('href') + ' #note_content');
 		 }
 		}
 	)

@@ -15,7 +15,11 @@ get '/' do
 end
 
 post '/' do
-  save_note
+  if (params['text'].empty? ^ params['title'].empty?)
+    save_note
+  else
+    redirect to "#{params['tags'].delete(' ','').tr(',','/')}"
+  end
 end
 
 get Regexp.new(MONGO_ID_REGEX.to_s + /\/edit/.to_s) do
@@ -60,10 +64,12 @@ end
 
 def render_note_list(tags)
   @tagged_noteset = WebNoteMongo.find_by_tag(tags)
-  if @tagged_noteset.count > 0
-    haml :tag
+  case @tagged_noteset.count
+  when 0 then "no notes found with tag(s):#{tags.join(',')}"
+  when 1
+    redirect to "/#{@tagged_noteset.first['_id']}"
   else
-    "no notes found with tag(s):#{tags}"
+    haml :tag
   end
 end
 

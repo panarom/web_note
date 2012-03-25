@@ -15,7 +15,7 @@ get '/' do
 end
 
 post '/' do
-  if (params['text'].empty? ^ params['title'].empty?)
+  if not (params['text'].empty? and params['title'].empty?)
     save_note
   else
     redirect to "#{params['tags'].delete(' ','').tr(',','/')}"
@@ -42,10 +42,6 @@ post Regexp.new(MONGO_ID_REGEX.to_s + /\/delete/.to_s) do
    else
      redirect to "#{get_id}/delete"
    end
-end
-
-get Regexp.new(MONGO_ID_REGEX.to_s + /\/text/.to_s) do
-  WebNoteMongo.find_by_id(get_id)['text']
 end
 
 get MONGO_ID_REGEX do

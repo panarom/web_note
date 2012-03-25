@@ -62,10 +62,13 @@ end
 
 def render_note_list(tags)
   @tagged_noteset = WebNoteMongo.find_by_tag(tags)
-  if @tagged_noteset.count > 0
-    haml :tag
+  case @tagged_noteset.count
+  when 0 then "no notes found with tag(s):#{tags}"
+  when 1
+    @note = WebNoteMongo.find_by_id(@tagged_noteset.first['_id'].to_s)
+    haml :show
   else
-    "no notes found with tag(s):#{tags}"
+    haml :tag
   end
 end
 

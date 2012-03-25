@@ -1,0 +1,4 @@
+jot 100|while read line; do pin=$(openssl base64 -in /dev/random|od -A n -N 16 -a |tr -d ' '); ./mongodb-osx-x86_64-2.1.0/bin/mongo --eval "db.PIN.save({pin:\"$pin\"}) " notes; echo $pin >> Documents/pin;done
+
+ssh -R27018:localhost:27017 foo@10.42.43.1
+db.copyDatabase('notes','notes','localhost:27018')

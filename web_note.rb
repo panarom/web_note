@@ -47,7 +47,11 @@ end
 
 get MONGO_ID_REGEX do
   @note = WebNoteMongo.find_by_id(get_id)
-  haml :show
+  if @note
+    haml :show
+  else
+    redirect to "/"
+  end
 end
 
 get '/:tag' do

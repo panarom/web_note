@@ -9,21 +9,22 @@ delete_note=function()
 				modal: true,
 				buttons : {
 					"Confirm" : function() {
+						var delete_url = event.currentTarget.href;
 						$.post(
-							event.currentTarget.href,
-							{'otp':$("#pin").val()},
-							delete_note_success_function
+							delete_url,
+							{'otp':$("#pin").val()}
 						);
+						var id_url = delete_url.split('/');
+						id_url.pop();
+						//redirect to note's url: if note was successfully deleted,
+						//that will redirect to homepage; otherwise, back at note
+						window.location = id_url.join('/');
 					},
 					"Cancel" : function() { $(this).dialog("close"); }
 				}
 			});
 		}
 	);
-}
-
-function delete_note_success_function(data, textStatus, jqXHR) {
-	console.log( data );
 }
 
 get_note_text=function()
@@ -33,7 +34,12 @@ get_note_text=function()
 		{
 			var id_url = event.currentTarget.href;
 			event.preventDefault();
-			$('#' + id_url.split('/').pop()).load(id_url + ' #note_content');
+			var note_content_div_selector = $( '#' + id_url.split('/').pop() )
+			if ( note_content_div_selector.is(':empty') ) {
+					note_content_div_selector.load(id_url + ' #note_content');
+			} else {
+				note_content_div_selector.empty()
+			}
 		}
 	)
 }

@@ -12,7 +12,7 @@ delete_note=function()
 						var delete_url = event.currentTarget.href;
 						$.post(
 							delete_url,
-							{'otp':$("#pin").val()}
+							{'otp':$("#otp").val()}
 						);
 						var id_url = delete_url.split('/');
 						id_url.pop();

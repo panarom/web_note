@@ -79,7 +79,7 @@ def save_note()
     params.delete('otp')
     #split tags on commas; then split any tags with spaces and add individual words as tags as well
     params['tags'] = params['tags'].split(',').collect{|t| t.strip}.collect{|t| t=~/\s/ ? [t,t.split(/\s/)].flatten : t}.flatten
-    redirect to("/#{WebNoteMongo.save(params).to_s}")
+    redirect to("/#{WebNoteMongo.save(params).to_s}")#this may be too clever: calling 'save' from inside a string interpolation (programming-by-side-effect FTL)
   else
     params['otp'] = "INVALID PIN: #{params['otp']}"
     @note = params

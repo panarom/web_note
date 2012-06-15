@@ -36,7 +36,7 @@ module WebNoteMongo
     end
 
     def check_pin(pin)
-      @db.collection('PIN').remove({'pin'=>pin}, {:safe=>true})["n"] > 0
+      @db.collection('PIN').remove({'pin'=>pin.strip}, {:safe=>true})["n"] > 0
     end
 
     def str_to_obj_id(oid)

@@ -11,40 +11,6 @@ before do
   WebNoteMongo.connect()
 end
 
-get '/' do
-  haml :edit
-end
-
-post '/' do
-  if not (params['text'].empty? and params['title'].empty?)
-    save_note
-  else
-    redirect to "#{params['tags'].delete(' ','').tr(',','/')}"
-  end
-end
-
-get Regexp.new(MONGO_ID_REGEX.to_s + /\/edit/.to_s) do
-  @note = WebNoteMongo.find_by_id(get_id)
-  @note['tags'] = @note['tags'].join(',')
-  haml :edit
-end
-post Regexp.new(MONGO_ID_REGEX.to_s + /\/edit/.to_s) do
-  params['_id'] = get_id
-  save_note
-end
-
-get Regexp.new(MONGO_ID_REGEX.to_s + /\/delete/.to_s) do
-  haml :delete
-end
-post Regexp.new(MONGO_ID_REGEX.to_s + /\/delete/.to_s) do
-  if WebNoteMongo.check_pin(params['otp'])
-     WebNoteMongo.delete(get_id)
-     redirect to '/'
-   else
-     redirect to "#{get_id}/delete"
-   end
-end
-
 get MONGO_ID_REGEX do
   @note = WebNoteMongo.find_by_id(get_id)
   if @note

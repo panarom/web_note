@@ -1,8 +1,0 @@
-%form{ :action => "", :method => "post"}
-  %fieldset
-    - @@TAGS.each do |tag|
-      %label{:for => "#{tag}"} #{tag.capitalize}:
-      %textarea{:name => "#{tag}"}= @note[tag] if @note
-    
-
-  %input{:type => "submit", :value => "commit", :class => "button"}

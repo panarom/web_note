@@ -11,12 +11,4 @@
     -haml_tag(:a, tag, { :href=>"/#{tag}" })
 
   %fieldset
-    -haml_tag(:a, "edit", { :href=>"/#{@note['_id']}/edit" })
-    -haml_tag(:a, "delete", { :href=>"/#{@note['_id']}/delete", :id=>'delete_link' })
     -haml_tag(:a, "show", { :href=>"/#{@note['_id']}" })
-    -haml_tag(:a, "home", { :href=>"/" } )
-
-
-%form{:action=>"", :id=>'delete_dialog', :hidden=>true}
-  %fieldset
-    = haml(:confirm_delete, :layout=>false)

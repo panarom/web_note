@@ -95,4 +95,34 @@ helpers do
   def note_link_text(note)
     note["title"] || note["text"][0...80]
   end
+
+  def note_output(note)
+    text = note['text']
+    language = note['language']
+
+    begin
+      case language
+      when nil
+        text
+      when 'ruby'
+        eval text
+      when 'javascript'
+        "<script>#{text}</script>"
+      else
+        input = <<RUBY
+#{language} <<'BASH'
+#{text}
+BASH
+RUBY
+
+        %x(#{input})
+      end
+    rescue Exception => e
+      error_message = "#{e.message}\n#{e.backtrace.join("\n")}"
+
+      STDERR.puts error_message
+
+      "#{text}\n#{error_message}"
+    end
+  end
 end

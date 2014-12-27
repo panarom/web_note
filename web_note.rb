@@ -32,7 +32,7 @@ end
 def render_note_list(tags)
   @tagged_noteset = WebNoteMongo.find_by_tag(tags)
   case @tagged_noteset.count
-  when 0 then "no notes found with tag(s):#{tags.join(',')}"
+  when 0 halt 404
   when 1
     redirect to "/#{@tagged_noteset.first['_id']}"
   else

@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'sinatra'
-require 'web_note_mongo'
+require './web_note_mongo'
 require 'haml'
 
 MONGO_ID_REGEX = /\/[0-9a-f]{24}/

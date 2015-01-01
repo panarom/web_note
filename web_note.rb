@@ -41,19 +41,6 @@ def render_note_list(tags)
   end
 end
 
-def save_note()
-  if WebNoteMongo.check_pin(params['otp'])
-    params.delete('otp')
-    #split tags on commas; then split any tags with spaces and add individual words as tags as well; remove duplicates
-    params['tags'] = params['tags'].split(',').collect{|t| t.strip}.collect{|t| t=~/\s/ ? [t,t.split(/\s/)].flatten : t}.flatten.uniq
-    redirect to("/#{WebNoteMongo.save(params).to_s}")#this may be too clever: calling 'save' from inside a string interpolation (programming-by-side-effect FTL)
-  else
-    params['otp'] = "INVALID PIN: #{params['otp']}"
-    @note = params
-    haml :edit
-  end
-end
-
 def get_id
   request.path_info.split('/')[1]
 end

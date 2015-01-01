@@ -3,6 +3,7 @@ require 'sinatra'
 require "sinatra/reloader"
 require 'web_note_mongo'
 require 'haml'
+require 'uri'
 
 MONGO_ID_REGEX = /\/[0-9a-f]{24}/
 @@TAGS = ['title', 'text', 'tags', 'otp']
@@ -60,7 +61,9 @@ get '/:tag' do
 end
 
 get /(\/[^\/]+){2,}/ do
-  render_note_list( request.path_info[1..-1].split('/') )
+  path = URI.unescape(request.path_info)
+
+  render_note_list( path.split('/').drop(1) )
 end
 
 def render_note_list(tags)

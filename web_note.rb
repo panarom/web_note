@@ -12,6 +12,10 @@ before do
   WebNoteMongo.connect()
 end
 
+def method_string(regexp)
+  Regexp.new(MONGO_ID_REGEX.to_s + regexp.to_s)
+end
+
 get '/' do
   haml :edit
 end
@@ -24,20 +28,20 @@ post '/' do
   end
 end
 
-get Regexp.new(MONGO_ID_REGEX.to_s + /\/edit/.to_s) do
+get method_string(/\/edit/) do
   @note = WebNoteMongo.find_by_id(get_id)
   @note['tags'] = @note['tags'].join(',')
   haml :edit
 end
-post Regexp.new(MONGO_ID_REGEX.to_s + /\/edit/.to_s) do
+post method_string(/\/edit/) do
   params['_id'] = get_id
   save_note
 end
 
-get Regexp.new(MONGO_ID_REGEX.to_s + /\/delete/.to_s) do
+get method_string(/\/delete/) do
   haml :delete
 end
-post Regexp.new(MONGO_ID_REGEX.to_s + /\/delete/.to_s) do
+post method_string(/\/delete/) do
   if WebNoteMongo.check_pin(params['otp'])
      WebNoteMongo.delete(get_id)
      redirect to '/'

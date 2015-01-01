@@ -5,7 +5,7 @@ require 'web_note_mongo'
 require 'haml'
 require 'uri'
 
-MONGO_ID_REGEX = /\/[0-9a-f]{24}/
+MONGO_ID_REGEX = /\/\h{24}/
 @@TAGS = ['title', 'text', 'tags', 'otp']
 
 before do

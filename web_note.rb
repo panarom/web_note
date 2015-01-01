@@ -44,7 +44,7 @@ def render_note_list(tags)
 end
 
 def get_id
-  request.path_info.split('/')[1]
+  request.path_info.split('/').last
 end
 
 helpers do

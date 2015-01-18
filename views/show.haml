@@ -6,7 +6,7 @@
 
 %h1= @note['title']
 #note_content
-  %p{:id=>"note_text"}= note_output(@note)
+  #note_text= note_output(@note)
   - @note['tags'].each do |tag|
     -haml_tag(:a, tag, { :href=>"/#{tag}" })
 

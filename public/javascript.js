@@ -14,3 +14,8 @@ get_note_text=function()
                 }
         )
 }
+
+replace_escaped_field_separator = function(input)
+{
+  return (input.indexOf('\u001f') > -1) ? input : JSON.parse('"' + input + '"');
+}

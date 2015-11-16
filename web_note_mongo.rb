@@ -7,8 +7,12 @@ module WebNoteMongo
 
   class << self
     def connect()
-      @db = Mongo::Connection.new('localhost',27017).db(DB_NAME)
-      @collection = @db.collection(DB_NAME)#COLLECTION_NAME)
+      unless @db.respond_to?(:active?) && @db.active?
+        @db = Mongo::Connection.new('localhost',27017).db(DB_NAME)
+        @collection = @db.collection(DB_NAME)#COLLECTION_NAME)
+      end
+
+      return @collection
     end
 
     def find_by_tag(tags)

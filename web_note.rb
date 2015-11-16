@@ -31,7 +31,19 @@ get /(\/[^\/]+){2,}/ do
   render_note_list( path.split('/').drop(1) )
 end
 
+post '/' do
+  if authorized?
+    redirect to "/#{WebNoteMongo.save(params)}"
+  else
+    halt 401, 'try over https'
+  end
+end
+
+post '/vocab' do
+end
+
 def render_note_list(tags)
+  #todo: add .ssl field to note; if true, only show note over HTTPS
   @tagged_noteset = WebNoteMongo.find_by_tag(tags)
   case @tagged_noteset.count
   when 0 then halt 404, "no notes found with tag(s):#{tags.join(',')}"
@@ -43,6 +55,10 @@ end
 
 def get_id
   request.path_info.split('/').last
+end
+
+def authorized?
+  request.env['HTTP_SSL_CLIENT_VERIFY'] == 'SUCCESS'
 end
 
 helpers do

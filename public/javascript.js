@@ -15,7 +15,12 @@ get_note_text=function()
         )
 }
 
-replace_escaped_field_separator = function(input)
+separate_tag_string=function(event)
 {
-  return (input.indexOf('\u001f') > -1) ? input : JSON.parse('"' + input + '"');
-}
+  var tags = $('#tags');
+  var text = tags.val();
+  var separator = text.slice(-1);
+  tags.val(text.slice(0,-1)
+           .replace(new RegExp(separator,'g'),
+                    '\u001f'));
+};

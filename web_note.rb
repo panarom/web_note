@@ -33,6 +33,9 @@ end
 
 post '/' do
   if authorized?
+    params['tags'] =
+      WebNoteMongo.connect.db.eval("tokenizeTags('#{params['tags']}')")
+
     redirect to "/#{WebNoteMongo.save(params)}"
   else
     halt 401, 'try over https'

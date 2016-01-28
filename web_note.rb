@@ -8,16 +8,24 @@ MONGO_ID_REGEX = /\/\h{24}/
 @@TAGS = ['title', 'text', 'tags', 'otp']
 
 before do
-  WebNoteMongo.connect()
+  unless request.post? && !authorized?
+    WebNoteMongo.connect
+  else
+    halt 401, 'try over https'
+  end
 end
 
-get MONGO_ID_REGEX do
+def render_note
   @note = WebNoteMongo.find_by_id(get_id)
   if @note
     haml :show
   else
     redirect to "/"
   end
+end
+
+get MONGO_ID_REGEX do
+  render_note
 end
 
 get '/:tag' do
@@ -32,17 +40,14 @@ get /(\/[^\/]+){2,}/ do
 end
 
 post '/' do
-  if authorized?
-    params['tags'] =
-      WebNoteMongo.connect.db.eval("tokenizeTags('#{params['tags']}')")
+  params['tags'] =
+    WebNoteMongo.connect.db.eval("tokenizeTags('#{params['tags']}')")
 
-    redirect to "/#{WebNoteMongo.save(params)}"
-  else
-    halt 401, 'try over https'
-  end
+  redirect to "/#{WebNoteMongo.save(params)}"
 end
 
-post '/vocab' do
+post MONGO_ID_REGEX do
+  render_note
 end
 
 def render_note_list(tags)

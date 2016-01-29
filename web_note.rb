@@ -4,7 +4,7 @@ require './web_note_mongo'
 require 'haml'
 require 'uri'
 
-MONGO_ID_REGEX = /\/\h{24}/
+MONGO_ID_REGEX = /\/\h{24}$/
 @@TAGS = ['title', 'text', 'tags', 'otp']
 
 before do
@@ -26,6 +26,10 @@ end
 
 get MONGO_ID_REGEX do
   render_note
+end
+
+get '/:id.source' do |id|
+WebNoteMongo.find_by_id(id)['text']
 end
 
 get '/:tag' do

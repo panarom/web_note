@@ -29,7 +29,11 @@ get MONGO_ID_REGEX do
 end
 
 get '/:id.source' do |id|
-WebNoteMongo.find_by_id(id)['text']
+  src = WebNoteMongo.find_by_id(id)
+
+  headers 'Content-Type' => 
+    src['language']  == 'javascript' ? 'application/javascript' : 'text/plain'
+  body src['text']
 end
 
 get '/:tag' do
@@ -89,7 +93,7 @@ helpers do
       when 'ruby'
         eval text
       when 'javascript'
-        "<script>#{text}</script>"
+        "<script =\"text/javascript\">#{text}</script>"
       else
         input = <<RUBY
 #{language} <<'BASH'

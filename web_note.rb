@@ -28,6 +28,10 @@ get MONGO_ID_REGEX do
   render_note
 end
 
+get '/:id.source' do |id|
+WebNoteMongo.find_by_id(id).text
+end
+
 get '/:tag' do
   #show notes tagged with :tag
   render_note_list([ params[:tag] ])

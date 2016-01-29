@@ -22,7 +22,7 @@
           <input type="text" name="title"> </input>
         </label>
         <label>Text:
-          <input type="textarea" name="text"></input>
+          <textarea name="text"></textarea>
         </label>
         <label>Tags:
           <input type="text" name="tags" id="tags">
@@ -33,15 +33,15 @@
     </form>
 
     <h2>Vocabulary</h2>
-    <form method="POST" action="/vocab">
+    <form method="POST" action="/">
       <fieldset>
         <label>Word:
-          <input type="text" name="word"></label>
+          <input type="text" name="title"></label>
         <label>Definition:
-          <input type="text" name="definition"></input>
+          <textarea name="text"></textarea>
         </label>
-        <label>Alternates:
-          <input type="text" name="alternates"></input>
+        <label>Tags:
+          <input type="text" name="tags" value="dictionarynew wordvocabulary"></input>
         </label>
       </fieldset>
       <input type="submit" value="New Word">

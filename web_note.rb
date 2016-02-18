@@ -17,7 +17,7 @@ end
 
 def render_note
   @note = WebNoteMongo.find_by_id(get_id)
-  if @note
+  unless @note.nil?
     haml :show
   else
     redirect to "/"

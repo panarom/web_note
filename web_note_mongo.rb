@@ -15,19 +15,22 @@ module WebNoteMongo
       return @collection
     end
 
-    def find_by_tag(tags)
-      if tags.size == 1
-        tag_hash = {'tags'=>tags[0]}
-      else
-        tag_hash = {
-          '$and'=> tags.collect{ |t| {'tags'=>t} }
-        }
-      end
-      @collection.find(tag_hash).sort(["_id",Mongo::DESCENDING])
+    def find_by_tag(tags, is_authorized)
+      tag_hash =
+        if tags.size == 1
+          {'tags'=>tags.first}
+        else
+          { '$and'=> tags.collect{ |t| {'tags'=>t} } }
+        end
+
+      @collection.find(unauthorized_search(tag_hash, is_authorized))
+        .sort(["_id",Mongo::DESCENDING])
     end
 
-    def find_by_id(oid)
-      @collection.find_one( str_to_obj_id(oid) )
+    def find_by_id(oid, is_authorized)
+      id = {'_id' => str_to_obj_id(oid)}
+
+      @collection.find_one(unauthorized_search(id, is_authorized))
     end
 
     def save(note)
@@ -45,6 +48,20 @@ module WebNoteMongo
 
     def str_to_obj_id(oid)
       BSON::ObjectId.from_string(oid)
+    end
+
+    def unauthorized_search(tag_hash, is_authorized)
+      if is_authorized
+        tag_hash
+      else
+        auth  = Proc.new{|h| h << {authorized_only: {'$exists' => false}}}
+
+        if tag_hash.keys.include?('$and')
+          tag_hash.tap{|h| auth.call(h['$and'])}
+        else
+          {'$and' => auth.call(Array[tag_hash])}
+        end
+      end
     end
   end
 end

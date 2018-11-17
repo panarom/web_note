@@ -1,14 +1,21 @@
-%script{:type=>"text/javascript", :src=>"/jquery-1.7.1.js"}
-%script{:type=>"text/javascript", :src=>"/jquery-ui-1.8.18.custom.min.js"}
-%script{:type=>"text/javascript", :src=>"/javascript.js"}
-:javascript
-  $(document).ready( delete_note );
+!!!
+%html
+  %head
+    %title= @note['title']
 
-%h1= @note['title']
-#note_content
-  #note_text= note_output(@note)
-  - @note['tags'].each do |tag|
-    -haml_tag(:a, tag, { :href=>"/#{tag}" })
+    %script{:type=>"text/javascript", :src=>"/jquery-1.7.1.js"}
+    %script{:type=>"text/javascript", :src=>"/jquery-ui-1.8.18.custom.min.js"}
+    %script{:type=>"text/javascript", :src=>"/javascript.js"}
 
-  %fieldset
-    -haml_tag(:a, "show", { :href=>"/#{@note['_id']}" })
+    :css
+      body,input,button {font-size: 3vmin;}
+
+  %body
+    %h1= @note['title']
+    #note_content
+      #note_text= note_output(@note)
+      - @note['tags'].each do |tag|
+        -haml_tag(:a, tag, { :href=>"/#{tag}" })
+
+    %fieldset
+      -haml_tag(:a, "show", { :href=>"/#{@note['_id']}" })

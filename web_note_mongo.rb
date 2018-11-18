@@ -2,17 +2,11 @@ require 'rubygems'
 require 'mongo'
 
 module WebNoteMongo
-  DB_NAME			= 'notes'
-  #COLLECTION_NAME	= 'note'
+  DB_NAME = :notes
 
   class << self
     def connect()
-      unless @db.respond_to?(:active?) && @db.active?
-        @db = Mongo::Connection.new('localhost',27017).db(DB_NAME)
-        @collection = @db.collection(DB_NAME)#COLLECTION_NAME)
-      end
-
-      return @collection
+      @collection ||= Mongo::Client.new("mongodb://#{ENV['MONGO_DB']}/#{DB_NAME.to_s}")[DB_NAME]
     end
 
     def find_by_tag(tags)
@@ -27,7 +21,7 @@ module WebNoteMongo
     end
 
     def find_by_id(oid)
-      @collection.find_one( str_to_obj_id(oid) )
+      @collection.find( str_to_obj_id(oid) ).first
     end
 
     def save(note)
